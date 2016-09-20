@@ -1,0 +1,17 @@
+[
+    {
+        "name": "all",
+        "_id": 0,
+        "flipids" : [
+            "fush",
+            "akop"
+        ]
+    },
+    {
+        "name": "nice examples",
+        "_id": 7,
+        "flipids" : [
+            "aff"
+        ]
+    }
+]

@@ -1,0 +1,68 @@
+[
+    {
+        "fhid": "abc",
+        "friendly": "friendly username",
+        "flips": [{
+            "fush": {
+                "title": "this ain't no flip",
+                "views": 6,
+                "channelid": 0,
+                "stars": {
+                    "yellow": 0,
+                    "green": 0,
+                    "red": 0,
+                    "blue": 0,
+                    "purple": 0
+                },
+                "comments": [
+                    {
+                        "fhid": "def",
+                        "text": "hey sweet flip"
+                    },
+                    {
+                        "fhid": "abc",
+                        "text": "thanks"
+                    }
+                ]
+            },
+            "akop": {
+                "title": "flip flop",
+                "views": 0,
+                "channelid": 7,
+                "stars": {
+                    "yellow": 100,
+                    "green": 0,
+                    "red": 0,
+                    "blue": 0,
+                    "purple": 0
+                },
+                "comments": [
+                    
+                ]
+            }
+        }]
+    },
+    
+    {
+        "fhid": "ddd",
+        "friendly": "friendly username",
+        "flips": [{
+            "aff": {
+                "title": "this ain't no flip",
+                "views": 0,
+                "channelid": 0,
+                "stars": {
+                    "yellow": 0,
+                    "green": 0,
+                    "red": 0,
+                    "blue": 0,
+                    "purple": 0
+                },
+                "comments": [
+                    
+                ]
+            }
+        }]
+    }
+ 
+]

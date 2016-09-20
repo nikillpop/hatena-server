@@ -1,0 +1,27 @@
+{
+  "name": "hatenatools-js",
+  "main": "ppm.js",
+  "scripts": {
+    "start": "node ppm.js"
+  },
+  "description": "hatenatools-js - a node-js port of pbsds' excellent hatena toolset.",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dylmye/hatenatools.git"
+  },
+  "keywords": [
+      "hatena",
+      "pbsds",
+      "ugo",
+      "ppm",
+      "tmb",
+      "ntft"
+  ],
+  "author": "Dylan Myers <dylmye@users.noreply.github.com> (http://dylmye.me/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dylmye/hatenatools/issues"
+  },
+  "homepage": "https://github.com/dylmye/hatenatools#readme"
+}

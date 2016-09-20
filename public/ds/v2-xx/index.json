@@ -1,0 +1,29 @@
+{
+    "layout": [
+        0
+    ],
+    "title": ["Title", 0],
+    "buttons": {
+        "BrowseFlips": {
+            "title": "Browse Flipnotes",
+            "url": "http://flipnote.hatena.com/ds/v2-xx/frontpage/hotmovies.uls",
+            "trait": 0,
+            "value": 0,
+            "embed": "__ntfts/News.ntft"
+        },
+        "ChannelList": {
+            "title": "Channel List",
+            "url": "http://flipnote.hatena.com/ds/v2-xx/help/info.htm",
+            "trait": 0,
+            "value": 0,
+            "embed": "__ntfts/News.ntft"
+        },
+        "HowToPost": {
+            "title": "How to Post",
+            "url": "http://flipnote.hatena.com/ds/v2-xx/help/post_howto.htm",
+            "trait": 0,
+            "value": 0,
+            "embed": "__ntfts/News.ntft"
+        }
+    }
+}

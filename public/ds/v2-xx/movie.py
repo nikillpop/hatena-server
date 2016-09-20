@@ -10,7 +10,7 @@ class PyResource(resource.Resource):
 	isLeaf = False
 	def __init__(self):
 		resource.Resource.__init__(self)
-
+		
 		self.CreatorID = CreatorIDResource()
 	def getChild(self, name, request):
 		if Database.CreatorExists(name):
@@ -28,12 +28,12 @@ class CreatorIDResource(resource.Resource):
 	isLeaf = False
 	def __init__(self):
 		resource.Resource.__init__(self)
-
+		
 		self.CreatorIDFile = CreatorIDFileResource()
 	def getChild(self, name, request):
 		CreatorID = request.path.split("/")[-2]
 		filename = ".".join(name.split(".")[:-1])
-
+		
 		if Database.FlipnoteExists(CreatorID, filename):#html, ppm and info
 			return self.CreatorIDFile
 		elif name == "":
@@ -52,18 +52,18 @@ class CreatorIDFileResource(resource.Resource):
 	def render(self, request):
 		creator, file = request.path.split("/")[-2:]
 		filetype = file.split(".")[-1].lower()
-
+		
 		if filetype in "ppm":
 			#log it:
 			path = "/".join(request.path.split("/")[3:])
 			Log(request, path)
-
+			
 			#add a view:
 			Database.AddView(creator, file[:-4])
-
+			
 			#read ppm file:
 			data = Database.GetFlipnotePPM(creator, file[:-4])
-
+			
 			#send file to the client:
 			request.responseHeaders.setRawHeaders('content-type', ['text/plain'])
 			return data
@@ -74,22 +74,22 @@ class CreatorIDFileResource(resource.Resource):
 			return "0\n0\n"#undocumented what it means
 		elif filetype == "htm":
 			#maybe cache the details page of Database.Newest?
-
+			
 			if "mode" in request.args:
 				if request.args["mode"][0] == "commentshalfsize":
 					pass
-
+			
 			return self.GenerateDetailsPage(creator, ".".join(file.split(".")[:-1])).encode("UTF-8")
 		elif filetype == "star":
 			path = "/".join(request.path.split("/")[3:])
 			headers = request.getAllHeaders()
-
+			
 			#bad formatting
 			if "x-hatena-star-count" not in headers:
 				ServerLog.write("%s got 403 when requesting %s without a X-Hatena-Star-Count header" % (request.getClientIP(), path), Silent)
 				request.setResponseCode(400)
 				return "400 - Denied access\nRequest lacks a X-Hatena-Star-Count http header"
-
+			
 			#add the stars:
 			amount = int(headers["x-hatena-star-count"])
 			if not Database.AddStar(creator, file[:-5], amount):
@@ -97,7 +97,7 @@ class CreatorIDFileResource(resource.Resource):
 				ServerLog.write("%s got 500 when requesting %s" % (request.getClientIP(), path), Silent)
 				request.setResponseCode(500)
 				return "500 - Internal server error\nAdding the stars seem to have failed."
-
+			
 			#report success
 			ServerLog.write("%s added %i stars to %s/%s.ppm" % (request.getClientIP(), amount, creator, file[:-5]), Silent)
 			return "Success"
@@ -105,14 +105,14 @@ class CreatorIDFileResource(resource.Resource):
 			path = "/".join(request.path.split("/")[3:])
 			Log(request, path, True)
 			#this is POSTed to when it've been stored to memory.
-
+			
 			Database.AddDownload(creator, file[:-3])
-
+			
 			return "Noted ;)"
 		else:
 			path = "/".join(request.path.split("/")[3:])
 			ServerLog.write("%s got 403 when requesting %s" % (request.getClientIP(), path), Silent)
-
+			
 			request.setResponseCode(403)
 			return "403 - Denied access"
 	#details page
@@ -123,7 +123,7 @@ class CreatorIDFileResource(resource.Resource):
 		tmb = TMB().Read(Database.GetFlipnoteTMB(CreatorID, filename))
 		if not tmb:
 			return "This flipnote is corrupt!"
-
+		
 		#Is it a spinoff?
 		Spinnoff = ""
 		if tmb.OriginalAuthorID <> tmb.EditorAuthorID or tmb.OriginalFilename <> tmb.CurrentFilename:
@@ -131,38 +131,38 @@ class CreatorIDFileResource(resource.Resource):
 				Spinnoff = SpinoffTemplate1.replace("%%CreatorID%%", tmb.OriginalAuthorID).replace("%%Filename%%", tmb.OriginalFilename[:-4])
 			elif tmb.OriginalAuthorID <> tmb.EditorAuthorID:
 				Spinnoff = SpinoffTemplate2
-
+		
 		#make each entry:
 		Entries = []
-
+		
 		#Creator username:
 		name = "Creator"
 		#content = "<a href=\"http://flipnote.hatena.com/ds/ds/v2-xx/%s/profile.htm?t=260&pm=80\">%s</a>" % (CreatorID, tmb.EditorAuthorName)
 		content = '<a href="http://flipnote.hatena.com/ds/v2-xx/%s/profile.htm?t=260&pm=80\">%s</a>' % (CreatorID, tmb.Username)
 		Entries.append(PageEntryTemplate.replace("%%Name%%", name).replace("%%Content%%", content))
-
+		
 		#Stars:
 		name = "Stars"
 		content = u'<a href="http://flipnote.hatena.com/ds/v2-xx/movie/%s/%s.htm?mode=stardetail"><span class="star0c">\u2605</span> <span class="star0">%s</span></a>' % (CreatorID, filename, flipnote[2])#yellow stars
 		#todo: add other stars
 		Entries.append(PageEntryTemplate.replace("%%Name%%", name).replace("%%Content%%", content))
-
+		
 		#Views:
 		name = "Views"
 		content = str(flipnote[1])
 		Entries.append(PageEntryTemplate.replace("%%Name%%", name).replace("%%Content%%", content))
-
+		
 		#Channel:
 		if flipnote[7]:#todo: make channels work at all
 			name = "Channel"
 			content = 'a href="http://flipnote.hatena.com/ds/v2-xx/ch/%s.uls">%s</a>' % (flipnote[7], flipnote[7])
 			Entries.append(PageEntryTemplate.replace("%%Name%%", name).replace("%%Content%%", content))
-
+		
 		#Comments:
 		Comments = "0"
-
+		
 		#doto: add original author info too
-
+		
 		#add the entries to page:
 		return DetailsPageTemplate.replace("%%CreatorID%%", CreatorID).replace("%%Filename%%", filename).replace("%%CommentCount%%", Comments).replace("%%Spinoff%%", Spinnoff).replace("%%PageEntries%%", PageEntrySeparator.join(Entries))
 
@@ -170,7 +170,6 @@ class CreatorIDFileResource(resource.Resource):
 DetailsPageTemplate = """<html>
 	<head>
 		<title>Flipnote by %%Username%%</title>
-		<meta name="bgm" content="1">
 		<meta name="upperlink" content="http://flipnote.hatena.com/ds/v2-xx/movie/%%CreatorID%%/%%Filename%%.ppm">
 		<meta name="starbutton" content="http://flipnote.hatena.com/ds/v2-xx/movie/%%CreatorID%%/%%Filename%%.star">
 		<meta name="savebutton" content="http://flipnote.hatena.com/ds/v2-xx/movie/%%CreatorID%%/%%Filename%%.ppm">
@@ -190,13 +189,13 @@ DetailsPageTemplate = """<html>
 					<div class="border"></div>
 				</td>
 			</tr>
-			<tr> <!-- top row, description and comments -->
+			<tr>
 				<td class="space"> </td>
-				<td class="tabon" align="center"> <!-- selected -->
-					<div class="on" align="center">Meta</div> <!-- selected -->
+				<td class="tabon" align="center">
+					<div class="on" align="center">Description</div>
 				</td>
-				<td class="taboff" align="center"> <!-- not selected -->
-					<a class="taboff" href="http://flipnote.hatena.com/ds/v2-eu/movie/%%CreatorID%%/%%Filename%%.htm?mode=commentshalfsize">%%CommentCount%% Comments</a>
+				<td class="taboff" align="center">
+					<a class="taboff" href="http://flipnote.hatena.com/ds/v2-eu/movie/%%CreatorID%%/%%Filename%%.htm?mode=commentshalfsize">Comments(%%CommentCount%%)</a>
 				</td>
 			</tr>
 		</table>

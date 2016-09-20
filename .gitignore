@@ -1,0 +1,14 @@
+# Logs
+logs/2016
+*.log
+
+# node + npm
+node_modules
+.npm
+npm-debug.log*
+
+# bower
+bower_components
+
+# ide
+.idea
