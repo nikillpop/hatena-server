@@ -1,3 +1,14 @@
+/**********************************************************
+ * HATENA-SERVER-NODEJS
+ *
+ * Released by dylmye
+ * Port of Python version created by pbsds
+ *
+ * v0.9.1-alpha
+ *
+ * functions.js - Exportable functions
+ */
+
 'use strict';
 
 module.exports = {

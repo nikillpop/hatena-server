@@ -1,8 +1,13 @@
-///////////////////////////////////////////
-//  hatena-server
-//  node-js port
-//  pbsds x dylmye
-//  v0.9.0-alpha
+/**********************************************************
+ * HATENA-SERVER-NODEJS
+ *
+ * Released by dylmye
+ * Port of Python version created by pbsds
+ *
+ * v0.9.1-alpha
+ *
+ * proxy.js - Proxy configuration
+ */
 
 var config = require('./config.js');
 var func = require('./functions.js');

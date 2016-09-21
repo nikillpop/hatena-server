@@ -1,8 +1,13 @@
-///////////////////////////////////////////
-//  hatena-server
-//  node-js port
-//  pbsds x dylmye
-//  v0.9.0-alpha
+/**********************************************************
+ * HATENA-SERVER-NODEJS
+ *
+ * Released by dylmye
+ * Port of Python version created by pbsds
+ *
+ * v0.9.1-alpha
+ *
+ * server.js - Server configuration
+ */
 
 var config = require('./config.js');
 var func = require('./functions.js');
@@ -13,14 +18,6 @@ var mkdirp = require('mkdirp');
 var redbird = require('redbird');
 
 var fs = require('fs');
-
-/* @changelog
-    ¬ v0.1-alpha - basic server design
-    ¬ v0.5-alpha - proxy added
-    ¬ v0.7-alpha - added logging (uses built-in bunyan) + rewriting v2-eu etc to -xx
-    ¬ v0.8-alpha - added UGOXML and plaintext database
-    ¬ v0.9-alpha - rewritten, adding sqlite
-*/
 
 /**********************************
     server and log setup
@@ -44,9 +41,22 @@ app.get(app.use(express.static(config.directory.content)), function expressAcces
 });
 
 app.get(/ugo/, function(req, res) {
-    handler = require('./hatenatools-js/ugo.js'); // to do - make handler
-    res.send(handler.renderToUGO(req, res));
+    res.append('X-Ridge-Dispatch', 'Hatena::UgoMemo::Engine::DS::Auth#default');
+    // var handler = require('./hatenatools-js/ugo.js'); // to do - make handler
+    // res.send(handler.renderToUGO(req, res));
+    res.send("hey boi");
 });
+
+app.get('/ds/v2-xx/auth', function(req, res) {
+    var handler = require('./auth.js'); // to do - make handler
+    res.send(handler.returnAuth(false, req, res));
+});
+
+app.post('/ds/v2-xx/auth', function(req, res) {
+    var handler = require('./auth.js'); // to do - make handler
+    res.send(handler.returnAuth(true, req, res));
+});
+
 
 var server = app.listen(config.public.port, config.public.address);
 

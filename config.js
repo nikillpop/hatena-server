@@ -1,3 +1,16 @@
+/**********************************************************
+ * HATENA-SERVER-NODEJS
+ *
+ * Released by dylmye
+ * Port of Python version created by pbsds
+ *
+ * v0.9.1-alpha
+ *
+ * config.js - User-editable config
+ */
+
+'use strict';
+
 var config = {
     public: {
         address: "127.0.0.1", // public-facing IP address

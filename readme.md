@@ -1,5 +1,5 @@
-# hatena-server - nodeJS port    
-## version 0.9.0-alpha    
+# hatena-server-nodejs
+## version 0.9.1-alpha    
 hatena-server is a DIY Flipnote Hatena replacement. Serve PPM flipnotes through your own social network.    
 
 ## Requires    
@@ -15,14 +15,16 @@ hatena-server is a DIY Flipnote Hatena replacement. Serve PPM flipnotes through 
     
 Uses the following modules:
 
-* express
-* mkdirp
 * redbird
-* python-shell    
-* sqlite3    
+* express
+* morgan
+* file-stream-rotator    
+* mkrdirp
+* sqlite3
 
-Please find the `editable variables` section of server.js before you run.    
+
+Please edit `config.js` before running.    
 
 ## Running    
 
-    $ npm hatena-server
+    $ node hatena-server
